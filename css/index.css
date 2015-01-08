@@ -1,0 +1,49 @@
+/* CSS Document */
+@charset "utf-8";
+body, html {width:100%;height:100%;margin:0;padding:0}
+body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,legend,table,td,th,img,div{margin:0;padding:0;border:0;}
+ul,ol{list-style-type:none;}
+li{list-style:none;}
+body {
+	background: url(../img/background1.jpg) repeat 0px 1px;
+}
+.begin_show{
+	text-align: center;
+	width: 200px;
+	height: 280px;
+	position: absolute;
+	z-index: 10;
+	top: 0;
+	left: 0;
+	background: url(../img/begin_show.png) center no-repeat;
+}
+.caption-top, .caption-bottom {
+	color: #ffffff;	
+	padding: 1.2em;	
+	font-weight: bold;
+	font-size: 13px;	
+	font-family: arial;	
+	cursor: default;
+	border: 0px solid #334143;
+	background: #000000;
+	text-shadow: 1px 1px 0 #202020;
+}
+.caption-top {
+   border-width: 0px 0px 8px 0px;
+}
+.caption-bottom {
+   border-width: 8px 0px 0px 0px;
+}
+.caption a, .caption a {
+	border: 0 none;
+	text-decoration: none;
+	background: #000000;
+	padding: 0.3em;
+}
+.caption a:hover, .caption a:hover {
+	background: #202020;
+}
+.caption-wrapper {
+	float: left;
+}
+br.c { clear: both; }

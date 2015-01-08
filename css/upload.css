@@ -1,0 +1,25 @@
+/* CSS Document */
+@charset "utf-8";
+.tips{
+	font-size:14px;
+	color:#666;
+	}
+.button{
+	
+	}
+form{
+	/*color:#FFFFFF;*/
+	font-size:16px;
+	
+	}
+.change{ 
+	/*背景图颜色渐变*/
+	width:100%; 
+	height:850px; 
+	FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#eee,endColorStr=#ddd); /*IE*/ 
+	background:-moz-linear-gradient(top,#eee,#ddd);/*火狐*/ 
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#eee), to(#ddd));/*谷歌*/ 
+} 
+.button{
+	float:right;
+	}

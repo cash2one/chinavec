@@ -1,0 +1,45 @@
+/* CSS Document */
+body {
+	background: url(../img/background2.jpg) repeat 0px 1px;
+}
+.change{ 
+	width:100%; 
+	height:600px; 
+	FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#f6f6f8,endColorStr=#b8c4cb); /*IE*/ 
+	background:-moz-linear-gradient(top,#f6f6f8,#b8c4cb);/*火狐*/ 
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#f6f6f8), to(#b8c4cb));/*谷歌*/ 
+} 
+
+    
+     h1 {background-color:#333333;color:#5b5b5b}
+     p.big {line-height: 260%}
+	 p.ex{color:#5b5b5b}
+	 a{color: #5b5b5b;text-decoration:none;}
+     /*a:visited {color: #660000;text-decoration:none;}*/
+     a:hover {color: #0000dd;text-decoration:underline;}
+    /* a:active {color: #6600FF;text-decoration:none;}*/
+*{border:1;text-decoration:none}
+/*.wrap{margin:8px;position:relative}*/
+.photo a{position:relative;border:0px solid #555555;}
+.photo a:hover{border:0px solid #FFFFFF;}
+.photo span{width:200px;background:#000;display:block;position:absolute;bottom:0;left:0;color:#fff;filter:alpha(opacity=50);-moz-opacity:0.6;opacity:0.6;font:bold 12px/30px Verdana, Arial; text-align:center;cursor:hand;}
+.photo a:hover span{text-decoration:underline}
+
+.video1{
+	
+	background-color:#DEDEDE;
+	float:left;
+	top:10%;
+	left:0;
+	width:180px;
+	height:250px;
+	margin:25px auto;
+	
+}
+
+*{margin:0;padding:0}
+div.section{overflow:hidden}
+div.aside{width:225px;float:left;display:inline}
+div.aside div.content{margin:5px;background:#666}
+div.aside div.content img{width:205px;margin:5px;}
+div.aside div.content div.imgcaption{margin:0 5px;line-height:20px}

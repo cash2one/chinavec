@@ -1,0 +1,152 @@
+/* CSS Document */
+#userInfo{ 
+	width:100%;
+	height:900px;
+	background-color:#EEE;
+}
+
+.userImg{
+	border-radius:9px;
+	width:100px;
+	height:100px;
+	}
+.name{
+	font-size:24px;
+	font-weight:600;
+	font-family:"MS Serif", "New York", serif;
+	}
+#modifyPsw{ 
+	width:100%;
+	height:500px;
+	background-color:#EEE;
+}
+.navList a:hover{
+	color:#f60;
+	background-color:#f3edc2
+	}
+.navList{
+	width:960px;
+	height:45px;
+	margin:0 0 0 10px;
+	}
+.navList ul{
+	margin-left:20px;
+	}
+.navList li{
+	float:left;
+	}
+.navList .selected{
+	color:#fff;
+	background-color:#f60;
+	margin-top:10px;
+    border: 1px solid #ddd;
+	border-radius:3px;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    width: 100px;
+	font-size:14px;
+	}
+.navList .navTitle{
+	margin-top:10px;
+	background: none repeat scroll 0 0 #fff;
+    border: 1px solid #ddd;
+    color: #000;
+	border-radius:3px;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    width: 100px;
+	font-size:14px;
+	}
+.videoForm{
+	margin-left:50px;
+	}
+.posterH{
+	width:150PX;
+	height:80PX;
+	float:left;
+	}
+.warning{
+	width:200px;
+	margin-left:300px;
+	font-family: Arial, Helvetica, sans-serif;
+}
+#box{
+    width:960px;
+	margin:20px auto;
+	background-color:#FFF;
+	border:solid 1px #c4c5d5;
+	border-radius:10px;
+}
+#box table{
+	line-height:40px;
+	font-family:Arial, Helvetica, sans-serif;
+	border-collapse:collapse;
+	background-color:#FFFFFF;
+}
+#box th{
+	font-size:16px;
+	line-height:40px;
+	background-color:#6BC30D;
+	color:#fff;
+	}
+#box tr{
+	font-size:14px;
+	
+	line-height:40px;
+	}
+.page{
+	float:left;
+	width:900px;
+	text-decoration:none; 
+	font-family:"微软雅黑";
+	font-size:14px;
+	font-weight:100;
+	text-align:center;
+	padding-bottom:10px;
+	margin:0 auto;
+	}
+.videoBlock{
+	width:950px;
+	margin-left:10px;
+	height:350px;
+	}
+.buttonGreen{
+	background-color: #518900;
+	background-image: -webkit-linear-gradient(top,#6BC30D,#518900);
+	background-image: -moz-linear-gradient(top,#6BC30D,#518900);
+	background-image: linear-gradient(top,#6BC30D,#518900);
+	-webkit-border-radius: 1px;	color:#FFFFFF;
+	font-family:Arial, Helvetica, sans-serif;
+	border-radius:2px;
+	width:70px;
+	height:25px;
+	BORDER-LEFT: #6BC30D 1px solid;/*左边框*/
+	BORDER-RIGHT: #6BC30D 1px solid;/*右边框*/
+	BORDER-TOP: #6BC30D 1px solid;/*上边框*/
+	BORDER-BOTTOM: #6BC30D 1px solid;/*下边框*/
+	PADDING-LEFT: 2px;/*左间隙*/
+	PADDING-RIGHT: 2px; /*右间隙*/
+	PADDING-TOP: 2px;/*上间隙*/
+	PADDING-BOTTOM: 2px;/*下间隙*/
+	FONT-SIZE: 14px;/*字号*/
+	CURSOR: pointer;/*光标类型*/
+	}
+.buttonGray{
+	display: block;
+	width: 70px;
+	height: 25px;
+	border: 1px solid #CCCCCC;
+	padding: 0;
+	font-size:14px;
+	font-family:Tahoma, Geneva, sans-serif;
+	color:#666666;
+	border-radius:2PX;
+	FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#FFF,endColorStr=#CCC); /*IE*/ 
+	background:-moz-linear-gradient(top,#FFF,#CCC);/*火狐*/ 
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#FFF), to(#CCC));/*谷歌*/ 
+	}
+

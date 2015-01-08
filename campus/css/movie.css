@@ -1,0 +1,37 @@
+/* CSS Document */
+th{
+	font-size:16px;
+	}
+.fenlei{
+	font-size:14px;
+	}
+p{
+	margin:0px;
+	font-size:16px;
+	line-height:160%;
+	}
+.titleCn{
+	font-size:14px;
+	}
+.stars{
+	font-size:12px;
+	color:#666666;
+	}
+.button{
+	background-color:#000000;
+	color:#FFFFFF;
+	width: 55px; 
+	height: 35px;
+	border-radius:5px;
+	border:0px;
+	}
+.page{
+	margin:10px;
+	width:960px;
+	float:left;
+	text-decoration:none; 
+	font-family:"微软雅黑";
+	font-size:14px;
+	color:#000000;
+	text-align:center;
+	}

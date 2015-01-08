@@ -1,0 +1,329 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<!--<meta name="renderer" content="ie-stand">-->
+<title>微院线播放</title>
+<!--<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script> <!--delete by ligang>-->
+<link rel="stylesheet" type="text/css" href="http://222.31.88.66/chinavec/css/base.css" />
+<link rel="stylesheet" type="text/css" href="http://222.31.88.66/chinavec/css/movieDetail.css" />
+
+<!--add by ligang-->
+<link rel="stylesheet" type="text/css" href="http://222.31.88.66/chinavec/css/jplayer.blue.monday.css" />	
+<script src="http://222.31.88.66/chinavec/js/jquery.min.js" type="text/javascript"></script>
+<!--<script src="js/html5media.min.js"></script>-->
+<script src="http://222.31.88.66/chinavec/js/jquery.jplayer.min.js" type="text/javascript"></script>
+<script src="http://222.31.88.66/chinavec/js/jplayer.js"  type="text/javascript"></script>
+<!--add  end-->
+</head>
+<script type="text/javascript">
+	$(document).ready(function(){
+	
+		$('#jp_video_0').bind('contextmenu',function() { 
+						return false; 
+			}); 
+		
+	});
+</script>
+<style type="text/css">
+body {
+	text-align:center;
+	background:#333 repeat 0px 1px;
+}
+
+</style>
+
+<body>
+
+<div id="layout">
+    
+    <img src="http://222.31.88.66/chinavec/img/logo_small.jpg" width="100px" height="52" align="left">
+     <table align="center" bgcolor="#000000" width="870" height="55" style="text-decoration:#DDD; font-size:16px; text-align:center;border-radius: 5px;">
+      <tr>
+		<td width="7%" align="middle" ><a href="http://222.31.88.66/chinavec/index.php" style="color:#DDD">首页</a>
+        </td>
+        <td><a href="" style="color:#DDD">|</a></td>          
+        <td width="11%" align="middle"><a href="http://222.31.88.66/chinavec/campus/campus.php" style="color:#DDD">微电影学院</a>            
+        </td>
+        <td><a href="" style="color:#DDD">|</a></td>
+        <td width="15%" align="middle"><a href="http://222.31.88.66/chinavec/project.php" style="color:#DDD">主题微视频计划</a>            
+        </td>
+        <td><a href="" style="color:#DDD">|</a></td>         
+        <td width="10%" align="middle"><a href="http://222.31.88.66/chinavec/movie.php" style="color:#DDD">微视频采购</a>            
+        </td>
+        <td><a href="" style="color:#DDD">|</a></td>
+        <td width="10%" align="middle"><a href="http://222.31.88.66/chinavec/activity.php" style="color:#DDD">线下活动</a>            
+        </td>
+        <td><a href="" style="color:#DDD">|</a></td>
+        <td width="10%" align="middle"><a href="http://222.31.88.66/chinavec/spread.php" style="color:#DDD">线上传播</a>            
+        </td>
+        <td><a href="" style="color:#DDD">|</a></td>
+        <td width="7%" align="middle"><a href="http://222.31.88.66/chinavec/item.php" style="color:#DDD">项目</a>            
+        </td>
+        <td><a href="" style="color:#DDD">|</a></td>
+        <td width="11%" align="middle"><a href="http://222.31.88.66/chinavec/upload/upload_video.php" style="color:#DDD">微视频管理</a>            
+        </td>
+        <td><a href="" style="color:#DDD">|</a></td>
+        <td width="11%" align="middle"><a href="http://222.31.88.66/chvec_auth/" style="color:#DDD">微视频授权</a>            
+        </td>
+     </tr>
+   </table>
+    	<div id="movieTitle">
+			<div style="float:left;">
+            <p style="color:#FFFFFF; font-size:15px;">齐越节新闻消息            &nbsp;&nbsp;<span style="color:#AAAAAA;font-size:12px;"></span></p>
+            <span style="color:#AAAAAA;font-size:12px;">ChinaVEC首页 >微院线&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;朗诵</span>
+            </div>
+           
+            </div>
+            <div style="float:right;">
+            <form action="searchList.php" method="get">
+                <input type="text" name="keyWord" placeholder="输入名称查询"  class="searchBlock"/>
+                <input type="submit" value="搜索" class="searchButton"/>
+            </form>
+            </div>
+        </div>
+				<!--jplayer div-->       
+	   <div style="margin:0 auto; text-align:center; width:100%">	
+			
+				<div class="jp-video jp-video-270p" style="margin:0 auto;padding-top:60px;padding-bottom:10px">
+					<div class="jp-type-single">
+						<div id="jquery_jplayer_2" class="jp-jplayer"></div> <!--播放器主界面-->
+						<!--播放器操作界面-->
+						<div id="jp_interface_2" class="jp-interface"> 
+							<div class="jp-video-play"></div> <!--中心播放图标-->
+							<div class="jp-video-preload" style="z-index:999;display:none;"><!--<img src="img/loading1.gif" width="30px" height="30px"/>--></div> <!--yujiazai-->
+							<ul class="jp-controls">
+								<li><a href="#" class="jp-play" tabindex="1">play</a></li>
+								<li><a href="#" class="jp-full-screen" tabindex="1">fullscreen</a></li>
+								<li><a href="#" class="jp-pause" tabindex="1">pause</a></li>
+								<li><a href="#" class="jp-stop" tabindex="1">stop</a></li>
+								<li><a href="#" class="jp-mute" tabindex="1">mute</a></li> <!--喇叭图标-->
+								<li><a href="#" class="jp-unmute" tabindex="1">unmute</a></li>
+							</ul>
+							<div class="jp-progress">
+								<div class="jp-seek-bar"> <!--进度条-->
+									<div class="jp-play-bar"></div>
+								</div>
+							</div>
+							<div class="jp-volume-bar"> <!--音量条-->
+								<div class="jp-volume-bar-value"></div>
+							</div>
+							<div class="jp-current-time"></div>
+							<div class="jp-duration"></div>
+						</div>
+						<!--播放器操作界面 end-->
+						<!--播放器显示界面
+						<div id="jp_playlist_2" class="jp-playlist" style="visibility:hidden;">
+							<p>
+								<span id="videoUrl" ></span>
+							</p>
+						</div>
+						播放器显示界面 end-->
+					</div>
+				</div>
+			</div>
+		<!--end jplayer div-->
+</div> 
+<a href="http://222.31.88.66/chinavec/order.php?id=151&name=齐越节新闻消息 "><button class="xuanze">选择该视频</button></a>
+<br/><span id="videoUrl"  style="visibility:hidden;">http://222.31.88.66/chvec_auth/video/151.mp4</span>
+<span id="pictureUrl"  style="visibility:hidden;">http://222.31.88.66/chinavec/data-storage/video/poster/h/151.jpg</span>
+
+<!--movieDetail Start-->        
+	
+    <div class="movieDetail"> 
+    	<br/>
+		<div class="movieDetail2">
+            <div style="width:600px;margin:25px 10px 0px 30px;float:left;">
+                <br/>
+                <p class="jieshaoT">视频信息</p>
+                <br/><br/>
+                <!--<p>名称：<span>齐越节新闻消息</span></p>
+                <p>制片人：<span>孟祥飞</span></p>
+                <p>导演：<span>孟祥飞</span></p>
+                <p>演员：<span>无</span></p>
+                <p>片长：<span>3分钟</span></p>
+                <p>标签：<span>朗诵</span></p>
+                <br/><br/>
+                <p>简介：<span class="greySmall">齐越节朗诵。</span></p>-->
+                <div style="float:left;">
+                                    <img src="http://222.31.88.66/chinavec/data-storage/video/poster/h/151.jpg" width="170px" height="110px" float="left"/>
+                </div>
+               <div style="width:215px; float:left; margin-left:28px;margin-top:-5px">
+               <div class="p_half1">
+                    <span class='gray14'>导演：</span>
+                    <span class='black14'>孟祥飞</span>
+               </div>
+                <div class="p_half1">
+                    <span class='gray14'>主演：</span>
+                    <span class='black14'>无</span><br/>
+                </div>
+                <div class="p_half1">
+                    <span class='gray14'>标签：</span>	
+                    <span class='black14'><a href='http://222.31.88.66/chinavec/searchTagList.php?tag=朗诵'>朗诵</a> </span><br/>
+                </div>
+                <div class="p_half1">
+                    <span class='gray14'>制片人：</span>	
+                    <span class='black14'>孟祥飞</span><br/>
+                </div>
+                <div class="p_half1">
+                    <span class='gray14'>年份：</span>	
+                    <span class='black14'>2013</span><br/>
+                </div>
+                
+                </div>
+                <div style="width:150px; float:left; margin-top:-5px">
+		<div class="p_half1">
+                                    <span class='gray14'>时长：</span>	
+                    <span class='black14'>3分钟</span><br/>
+                </div>                
+		<div class="p_half1">
+                    <span class='gray14'>联系人：</span>	
+                    <span class='black14'>QQ:985658217</span><br/>
+                </div>
+		</div>
+                <div style=" margin-top:10px; width:500px; float:left;">   
+                    <span class='gray14'>简介：</span>
+                    <span class='gray14'>齐越节朗诵。</span><br/>
+                </div>
+                
+            </div>
+            
+            <div style="margin:25px 0px 0px 0px;float:left; width:300px;">
+            	<br/>
+                <p class="jieshaoT">本周采购榜</p><br/><br/>
+                <table width='300px' style='float:left;	border-collapse:collapse;'>
+                                            <tr style="border-bottom:1px dashed #ddd; line-height:30px;" onmouseover="style.backgroundColor='#F0FAD9'" onmouseout="style.backgroundColor='#FFFFFF'">
+                                <td class="rankNum" width="10px">1</td>
+                                <td class="black12" style="font-family:微软雅黑; padding-left:15px;" width="190px"><a href="http://222.31.88.66/chinavec/movieDetail.php?id=32&typeId=1">幻</a></td>
+                                <td class="gray12" width="100px" align="center">赵子忠</td>
+                            </tr>
+                            <div style="clear:both"></div>
+
+				                            <tr style="border-bottom:1px dashed #ddd; line-height:30px;" onmouseover="style.backgroundColor='#F0FAD9'" onmouseout="style.backgroundColor='#FFFFFF'">
+                                <td class="rankNum" width="10px">2</td>
+                                <td class="black12" style="font-family:微软雅黑; padding-left:15px;" width="190px"><a href="http://222.31.88.66/chinavec/movieDetail.php?id=2&typeId=6">CUC-NMI新媒体研究院宣传片</a></td>
+                                <td class="gray12" width="100px" align="center">梁宇</td>
+                            </tr>
+                            <div style="clear:both"></div>
+
+				                            <tr style="border-bottom:1px dashed #ddd; line-height:30px;" onmouseover="style.backgroundColor='#F0FAD9'" onmouseout="style.backgroundColor='#FFFFFF'">
+                                <td class="rankNum" width="10px">3</td>
+                                <td class="black12" style="font-family:微软雅黑; padding-left:15px;" width="190px"><a href="http://222.31.88.66/chinavec/movieDetail.php?id=1&typeId=1">27岁</a></td>
+                                <td class="gray12" width="100px" align="center">杜美莹</td>
+                            </tr>
+                            <div style="clear:both"></div>
+
+				                            <tr style="border-bottom:1px dashed #ddd; line-height:30px;" onmouseover="style.backgroundColor='#F0FAD9'" onmouseout="style.backgroundColor='#FFFFFF'">
+                                <td class="rankNum" width="10px">4</td>
+                                <td class="black12" style="font-family:微软雅黑; padding-left:15px;" width="190px"><a href="http://222.31.88.66/chinavec/movieDetail.php?id=31&typeId=1">欢乐使者</a></td>
+                                <td class="gray12" width="100px" align="center">高山</td>
+                            </tr>
+                            <div style="clear:both"></div>
+
+				                            <tr style="border-bottom:1px dashed #ddd; line-height:30px;" onmouseover="style.backgroundColor='#F0FAD9'" onmouseout="style.backgroundColor='#FFFFFF'">
+                                <td class="rankNum" width="10px">5</td>
+                                <td class="black12" style="font-family:微软雅黑; padding-left:15px;" width="190px"><a href="http://222.31.88.66/chinavec/movieDetail.php?id=30&typeId=5">华夏霓裳</a></td>
+                                <td class="gray12" width="100px" align="center">白露</td>
+                            </tr>
+                            <div style="clear:both"></div>
+
+				                            <tr style="border-bottom:1px dashed #ddd; line-height:30px;" onmouseover="style.backgroundColor='#F0FAD9'" onmouseout="style.backgroundColor='#FFFFFF'">
+                                <td class="rankNum" width="10px">6</td>
+                                <td class="black12" style="font-family:微软雅黑; padding-left:15px;" width="190px"><a href="http://222.31.88.66/chinavec/movieDetail.php?id=3&typeId=2">音乐星期五</a></td>
+                                <td class="gray12" width="100px" align="center">穆捷</td>
+                            </tr>
+                            <div style="clear:both"></div>
+
+				                            <tr style="border-bottom:1px dashed #ddd; line-height:30px;" onmouseover="style.backgroundColor='#F0FAD9'" onmouseout="style.backgroundColor='#FFFFFF'">
+                                <td class="rankNum" width="10px">7</td>
+                                <td class="black12" style="font-family:微软雅黑; padding-left:15px;" width="190px"><a href="http://222.31.88.66/chinavec/movieDetail.php?id=28&typeId=3">关于苹果</a></td>
+                                <td class="gray12" width="100px" align="center">周翔</td>
+                            </tr>
+                            <div style="clear:both"></div>
+
+				                            <tr style="border-bottom:1px dashed #ddd; line-height:30px;" onmouseover="style.backgroundColor='#F0FAD9'" onmouseout="style.backgroundColor='#FFFFFF'">
+                                <td class="rankNum" width="10px">8</td>
+                                <td class="black12" style="font-family:微软雅黑; padding-left:15px;" width="190px"><a href="http://222.31.88.66/chinavec/movieDetail.php?id=6&typeId=4">阿根达斯</a></td>
+                                <td class="gray12" width="100px" align="center">巩雪</td>
+                            </tr>
+                            <div style="clear:both"></div>
+
+				                            <tr style="border-bottom:1px dashed #ddd; line-height:30px;" onmouseover="style.backgroundColor='#F0FAD9'" onmouseout="style.backgroundColor='#FFFFFF'">
+                                <td class="rankNum" width="10px">9</td>
+                                <td class="black12" style="font-family:微软雅黑; padding-left:15px;" width="190px"><a href="http://222.31.88.66/chinavec/movieDetail.php?id=10&typeId=6">爱演</a></td>
+                                <td class="gray12" width="100px" align="center">梁宇</td>
+                            </tr>
+                            <div style="clear:both"></div>
+
+				                            <tr style="border-bottom:1px dashed #ddd; line-height:30px;" onmouseover="style.backgroundColor='#F0FAD9'" onmouseout="style.backgroundColor='#FFFFFF'">
+                                <td class="rankNum" width="10px">10</td>
+                                <td class="black12" style="font-family:微软雅黑; padding-left:15px;" width="190px"><a href="http://222.31.88.66/chinavec/movieDetail.php?id=43&typeId=3">旅行观</a></td>
+                                <td class="gray12" width="100px" align="center">于超</td>
+                            </tr>
+                            <div style="clear:both"></div>
+
+				                </table>
+          </div>
+        </div>
+        
+        <!--同类推荐START-->
+        <div class="similar">
+            <h2>您可能感兴趣的微视频</h2>
+            				<div class="similarList">
+                    <a href="http://222.31.88.66/chinavec/movieDetail.php?id=179&typeId=2"><span><img src="http://222.31.88.66/chinavec/data-storage/video/poster/h/179.jpg" width="160" height="110"/></span>
+                	<p class="black14">第三集东湖梅岭毛泽东</p></a>
+                    <span class='gray12'>东湖梅岭 毛泽东 湖北武汉 </span><br/>
+
+                </div>
+								<div class="similarList">
+                    <a href="http://222.31.88.66/chinavec/movieDetail.php?id=178&typeId=2"><span><img src="http://222.31.88.66/chinavec/data-storage/video/poster/h/178.jpg" width="160" height="110"/></span>
+                	<p class="black14">第二集东湖梅岭毛泽东</p></a>
+                    <span class='gray12'>东湖梅岭 毛泽东 湖北武汉 </span><br/>
+
+                </div>
+								<div class="similarList">
+                    <a href="http://222.31.88.66/chinavec/movieDetail.php?id=177&typeId=2"><span><img src="http://222.31.88.66/chinavec/data-storage/video/poster/h/177.jpg" width="160" height="110"/></span>
+                	<p class="black14">第一集东湖梅岭毛泽东</p></a>
+                    <span class='gray12'>东湖梅岭 毛泽东 湖北武汉 </span><br/>
+
+                </div>
+								<div class="similarList">
+                    <a href="http://222.31.88.66/chinavec/movieDetail.php?id=175&typeId=2"><span><img src="http://222.31.88.66/chinavec/data-storage/video/poster/h/175.jpg" width="160" height="110"/></span>
+                	<p class="black14">乡村教师</p></a>
+                    <span class='gray12'>纪录 乡村教师 坚守 农村 </span><br/>
+
+                </div>
+								<div class="similarList">
+                    <a href="http://222.31.88.66/chinavec/movieDetail.php?id=174&typeId=2"><span><img src="http://222.31.88.66/chinavec/data-storage/video/poster/h/174.jpg" width="160" height="110"/></span>
+                	<p class="black14">毕业生</p></a>
+                    <span class='gray12'>毕业生 找工作 奋斗 </span><br/>
+
+                </div>
+				        </div>
+        <!--同类推荐END-->
+    </div>
+
+<!--movieDetail END-->       
+ <div style="clear:both"></div>
+<!--logo-->
+	<div style="width:100%; float:auto; margin-top:50px; margin-bottom:20px">
+	<!--<p align="center" style="color:#FFF; padding-top:15px">支持单位与合作媒体</p>-->
+		<div style="width:480px; height:180px; margin:0 auto; ">
+		</br>
+        <img src="http://222.31.88.66/chinavec/img/logo_wall.jpg" width="480px" height="140px" style="margin:0 auto;"  />
+		
+		<!--<img src="img/cuc_logo.jpg" width="130px" height="90px" style="margin:5px auto auto 10px; float:left"  />
+		<img src="img/zg_logo.jpg" width="130px" height="90px" style="margin:5px auto auto 35px; float:left"  />
+		<img src="img/xhs_logo.jpg" width="130px" height="90px" style="margin:5px auto auto 35px; float:left" />-->
+		</div>
+	</div>
+	<!--logo-->
+<div>
+<p align="center" style=" color:#FFF; padding-top:1px; font-size:14px;">copyright © 2013-2014 中国微视频协作与交易平台<br/>All Rights Reserved. 中国传媒大学 新媒体研究院</p>
+</div>
+</div>
+
+</body>
+	
+</html>
