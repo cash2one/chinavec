@@ -24,18 +24,18 @@
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 <title>微电影上传</title>
 <link rel="stylesheet" type="text/css" href="css/upload.css" />
+<style>
+ .notice{
+	color:red;
+}
+</style>
 </head>
 <?php 
 	session_start();
-	/*
-	if($_SESSION['upload_auth']!='true'){
-		echo "<script type=\"text/javascript\">alert('非法跳转');</script>";
-		echo "<script type=\"text/javascript\">history.go(-1);</script>";
-}
-*/
 	include "common/checkLog.php";
 	include "common/visitRight.php";
 	include "config/config.php";
+	include "lib/connect.php";
 
 ?>
 
@@ -47,6 +47,16 @@
 	<?php 
 		include "common/table.php";
 		$id=$_GET['ID'];
+		$username = $_SESSION['user_name'];
+		$sql = mysql_query("select * from `user` where `name`='$username'");
+		$row = mysql_fetch_array($sql);
+		$user_id = $row['id'];
+		$sql = mysql_query("select user_id from video where id = '$id'");
+		$row = mysql_fetch_array($sql);
+		if($row['user_id']!=$user_id){
+		echo "<script>alert('非法访问');</script>";
+		echo "<script>history.back(-1);</script>;";		
+		}
 	?>
 
 
@@ -57,7 +67,7 @@
     	<form id="fileForm" enctype="multipart/form-data" method="post" action="upload.php">
 		<label for="videoUpload" class="span1">选择文件</label>
 		<input type="file" id="fileToUpload" multiple onchange="fileSelected();" />
-		<!-- <input type="text" id="" value="" /> -->
+		<!-- type="file"这个不是由一个text和一个button组合成的，它是一个控件-->
 		<p />
 		<div class="well">
 			<div id="fileName"></div>
@@ -71,17 +81,19 @@
 		<img style="width:50%;height:50%;margin-left:5px;" src="<?php echo $config['videoRoot']; ?>/img/header1.png" />
 		<img style="width:47%;height:50%" src="<?php echo $config['videoRoot']; ?>/img/header2.png" />
 		</p>		
-		<input class="btn btn-primary" type="button" onclick="getToken()" value="上传" />
+		<input class="btn btn-primary" type="button" onclick="getToken()" value="上传" />          <!--btn btn-primary:提供额外的视觉感, 可在一系列的按钮中指出主要操作-->
 		<?php
 		$path=$config['auth'].$config['video'].$id.'.mp4';
 		//exit;
 		if(file_exists($path))
 		 {
 		  echo "<input class='btn' type='button' onclick='javascript:history.go(-1);' value='取消返回' />";
+ 		  echo "<span class = 'notice'>(注：若您的视频未做修改，请关闭此页)</span>";
 		 }
 		 else
 		 {
 		  echo "<input class='btn' type='button' onclick='uploadCanceled()' value='取消上传' />";  //文件不存在
+		 
 		 }		
 		?>
 		<!--<input class="btn" type="button" onclick="uploadCanceled()" value="取消上传" />-->
@@ -92,6 +104,7 @@
 		</form>
 	</div>
         <br/><br/>  
+	 <div><p></div>
          <div class="tips">
                 <table cellpadding="0" cellspacing="0" border="0">
                   <tbody>
@@ -166,6 +179,14 @@
     </div>
 </div>
 <script type="text/javascript">
+
+	if(!(window.File && window.FileReader && window.FileList && window.Blob)){
+	alert('buzhichi');
+	
+	}
+	$(window).bind('beforeunload',function(){
+	return '确定放弃上传么';
+	});
         //var id='';windows.location.search.split('=')[1];
 	//var type = '';
 	var rdVal='';
@@ -203,7 +224,7 @@
 		 
 		if (file) {
 			var fileSize = 0;
-			if(file.size > 1024*1024) 
+			if(file.size > 1024*1024) //文件小于1M
 				fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
 			else
 				fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';	
@@ -271,7 +292,7 @@
 				uploadFile(start, end, token);	
 			} else {
 				var id='<?php echo $_GET['ID'];?>';
-				alert("上传完成！正在后台转码，请稍候查看！");
+				alert("上传完成！请选择视频截图");
 				window.location.href="choseimg.php?ID="+id;
 			}
 		}, false);
@@ -315,6 +336,5 @@
 	}
 	</script>
 <?php
-	//unset($_SESSION['upload_auth']);
 	require('common/footer.php');
 ?>

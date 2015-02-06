@@ -5,7 +5,7 @@
 class DB{
     var $conn;//数据库连接端口
 
-    public function __construct($c = array('port'=>3306, 'host'=>'localhost', 'username'=>'root', 'password'=>'123456', 'dbname'=>'chinavec', 'charset'=>'utf8', 'time_zone'=>'+08:00')){
+    public function __construct($c = array('port'=>3306, 'host'=>'localhost', 'username'=>'', 'password'=>'', 'dbname'=>'chinavec', 'charset'=>'utf8', 'time_zone'=>'+08:00')){
         if(!isset($c['port'])){
             $c['port'] = '3306';
         }

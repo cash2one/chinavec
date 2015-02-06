@@ -2,7 +2,7 @@
 partNum=$1
 token=$2
 ID=$3
-radio=$4        
+radio=$4   
 num=2	
 k=1
 	cd /var/www/chinavec/upload/upload/tmp/
@@ -10,17 +10,17 @@ k=1
 	for ((i=1;i<=$partNum;i++))do echo $token-$i;done | xargs -i cat {} > /var/www/chinavec/upload/upload/tmp/$token.mpg;
 	
 	#sleep 20
-	#ffprobe -v quiet -print_format json -show_format -show_streams #{source}	
+	#ffprobe -v quiet -print_format json -show_format -show_streams #{source}
+	#/root/bin/ffprobe -i /var/www/1.mp4 -v quiet -print_format json -show_streams 2>&1 | grep -E "width|height" | cut -d '' -f 4 | sed s/,//
+	
 
-	#��ͼ
-	#/root/bin/ffmpeg -i $token.mpg -y -f image2 -ss 60 -t 0.001 -s 1350x523 /var/www/chinavec/data-storage/video/poster/h/$ID.jpg;
 	/usr/local/zend/bin/php /var/www/chinavec/upload/updateimg.php ID ${ID} token ${token}
 
-	#��ͼ
+	#截图
 	#/root/bin/ffmpeg -ss 20 -i $token.mpg -y -f image2 -t 0.001 -s 1350x523 /var/www/chinavec/upload/imgtmp/$ID-1.jpg;
 	#/root/bin/ffmpeg -ss 50 -i $token.mpg -y -f image2 -t 0.001 -s 1350x523 /var/www/chinavec/upload/imgtmp/$ID-2.jpg;
 	#/root/bin/ffmpeg -ss 80 -i $token.mpg -y -f image2 -t 0.001 -s 1350x523 /var/www/chinavec/upload/imgtmp/$ID-3.jpg;
-	#ʱ��
+	#时长
 	time=`/root/bin/ffmpeg -i $token.mpg 2>&1 | grep 'Duration' | cut -d '' -f 4 | sed s/,//`;
 	hour=`echo "$time" | awk -F':' '{print int($2)}'`
 	min=`echo "$time" | awk -F':' '{print int($3)}'`
@@ -45,7 +45,7 @@ do
 	do
 	#/usr/local/zend/bin/php /var/www/chinavec/select.php ID ${ID} status 1
 	/usr/local/zend/bin/php /var/www/chinavec/upload/update.php ID ${ID} status 1
-	#��Ƭͷ
+	#加片头
 	if [ $radio ]; then
 	   #cat $token.mpg /var/www/chvec_auth/headermv/$radio.mpg > $token-$radio.mpg
 	   #/root/bin/ffmpeg -i $token.mpg -q:v 3 $token.mp4
@@ -57,24 +57,32 @@ do
 	   /root/bin/ffmpeg -threads 2 -i $token.mpg -q:v 3 $token-1.mpg
 	   /root/bin/ffmpeg -threads 2 -i concat:"/var/www/chvec_auth/headermv/$radio.mpg|/var/www/chinavec/upload/upload/tmp/$token-1.mpg" -c:v libx264 -preset ultrafast -c:a libfdk_aac /var/www/chvec_auth/video/$ID.mp4
 	else 
-	   #/root/bin/ffmpeg -i $token.mpg -q:v 3 /var/www/chvec_auth/video/$ID.mp4
-	   /root/bin/ffmpeg -threads 2 -i $token.mpg  -c:v libx264 -preset ultrafast -c:a libfdk_aac -q:v 3 /var/www/chvec_auth/video/$ID.mp4
+	   /root/bin/ffmpeg -threads 2 -i $token.mpg -c:v libx264 -preset ultrafast -c:a libfdk_aac /var/www/chvec_auth/video/$ID.mp4
 	fi
 	
-
+	
 	#/root/bin/ffmpeg -i concat:"" -q:v 1 /var/www/result.mp4
 	#for((i=1;i<=31;i++));do a=5343d5de3c223-$i;a="$a|";b="$b$a";echo$b;done | xargs
 	#sleep 60
 	
 	#cd /var/www/chinavec/upload/upload/tmp/
-	/usr/local/zend/bin/php /var/www/chinavec/upload/update.php ID ${ID} status 2
+	#获取视频分辨率
+	streamsw=`/root/bin/ffprobe -i /var/www/chinavec/upload/upload/tmp/$token.mpg -v quiet -print_format json -show_streams 2>&1 | grep -E "width" | cut -d '' -f 4 | sed s/,//`
+	streamsh=`/root/bin/ffprobe -i /var/www/chinavec/upload/upload/tmp/$token.mpg -v quiet -print_format json -show_streams 2>&1 | grep -E "height" | cut -d '' -f 4 | sed s/,//`
+	vgw=`echo "$streamsw" | awk -F':' '{print int($2)}'`
+	vgh=`echo "$streamsh" | awk -F':' '{print int($2)}'`
+	vg=$vgw"*"$vgh;
+
+	
+	
+	/usr/local/zend/bin/php /var/www/chinavec/upload/update.php ID ${ID} status 2 vg ${vg} time ${timenum}
+	#/usr/local/zend/bin/php /var/www/chinavec/upload/choseimg.php vg ${vg}
+	#/usr/local/zend/bin/php /var/www/chinavec/select.php ID ${ID} status 2
 	for ((i=1;i<=$partNum;i++));do rm -rf $token-$i;done;
-	#sleep 1d;
-	rm -f $token-1.mpg;
-	#rm -rf  *
 	sleep 10
 	exit 0
 	done
 	#rm -rf  *
 	sleep 20
+	#/usr/local/zend/bin/php /var/www/chinavec/select.php ID ${ID} status 0
 done

@@ -2,7 +2,8 @@
 <html>
 <head runat="server">
 <meta charset="utf-8">
-<title>微视频采购</title>
+<!--<meta name="renderer" content="ie-stand">-->
+<title>微院线</title>
 <?php date_default_timezone_set("Asia/Shanghai");?>
 <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="js/movie.js"></script>
@@ -29,16 +30,17 @@ body {
 if(!(isset($_SESSION['islogin']) && $_SESSION['islogin'] = true))
 {
 	include "login.php"; 
-	//include "siteview.php";
+	include "siteview.php";
 }else{
 	include "LoginSuccess.php";
-	//include "userview.php";
+	include "userview.php";
 };
-?>
-<!--登录-->
-<br/><br/>   
+?> 
+<!--登录-->  
 <div id="layout">
-	<?php 
+	<?php   
+		echo "<br/>";
+		echo "<br/>";
 		include "common/table1.php"; //索引标题栏
 		include('lib/connect.php'); //数据库连接文件
 
@@ -271,16 +273,15 @@ HIDDEN;
     
     <div style="height:15px;"></div>
     
-	<div style=" background-color:#FFFFFF; width:970px; height:1300px; margin:0 auto; clear:both; border-radius: 2px;" >       
+	<div style=" background-color:#FFFFFF; width:970px; height:1150px; margin:0 auto; clear:both; border-radius: 2px;" >       
     <!--选项卡开始-->
     <div class="navList">
         <ul>
          <?php
                         $fieldArr = array(
-                            //"id" => "最近更新",
-			    "is_on_shelf" => "最近更新",
-                            //"playNum" => "采购排行",
-			    "playNum" => "观看排行",
+                            "is_on_shelf" => "最近更新",
+			    //"id" => "最近更新",
+                            "playNum" => "观看排行",
                             "year" => "最新上映"
                         );
 
@@ -301,14 +302,7 @@ LI;
     </div>
 	<!--选项卡结束-->
 	<?php
-	/**根据筛选选项值，生成MySQL操作的condition**/
-        $tmp = array();
-        /*foreach ($arr as $key => $value) {
-            if ($value != 0) {
-                $tmp[] = "video.$key=$value";
-            }
-        }*/
-	function sec2time($sec){	
+			function sec2time($sec){	
 			$sec = round($sec/60);
 			if ($sec >= 60){
 				$hour = floor($sec/60);
@@ -320,6 +314,13 @@ LI;
 			}
 			return $res;
 			}
+	/**根据筛选选项值，生成MySQL操作的condition**/
+        $tmp = array();
+        /*foreach ($arr as $key => $value) {
+            if ($value != 0) {
+                $tmp[] = "video.$key=$value";
+            }
+        }*/
 	if($arr["type_id"]!=0){
 		$tmp[0] ="video.type_id =".$arr["type_id"];
 	}
@@ -352,7 +353,7 @@ LI;
 	}
         $condition = implode(' and ', $tmp);
         if (!$condition) {
-            $condition = 1;
+            $condition = "is_on_shelf>-2";
         }
 
         $Page_size=20; //每页显示的条目数
@@ -385,8 +386,7 @@ LI;
 				ON video.id = video_view_statistics.video_id
 				where $condition
 				ORDER BY video_view_statistics.view_total DESC
-				limit $offset,$Page_size";
-			*/
+				limit $offset,$Page_size";*/
 			$sql="SELECT `video_view_statistics`.`video_id`,`video_view_statistics`.`type_id`,count(`video_view_statistics`.`video_id`) 
 				AS `view_total`,`video`.* from `video_view_statistics`,`video` where `video`.`id`=`video_view_statistics`.`video_id`
 				group by `video_view_statistics`.`video_id` ORDER BY count(`video_view_statistics`.`video_id`) DESC,`video`.`id` DESC
@@ -395,7 +395,7 @@ LI;
 		else{
     		$sql="select * from video where $condition
 				group by title_cn 
-				ORDER BY `$field` DESC,`id` DESC 
+				ORDER BY `$field` DESC,`id` DESC
 				limit $offset,$Page_size";
 		}
     	$result=mysql_query($sql);
@@ -403,10 +403,13 @@ LI;
 	
  //显示视频图片及名称列表List START           
             while ($row=mysql_fetch_array($result)) { ?>
-           <div style="width:200px; height:160px; margin:50px 20px 5px 22px; float:left; border-radius: 5px;" class="zzsc">    
+           <div style="width:200px; height:160px; margin:40px 20px 5px 22px; float:left; border-radius: 5px;" class="zzsc">    
                 <div style="margin:0px auto;">
                     <a href="movieDetail.php?id=<?php echo $row['id']?>&typeId=<?php echo $row['type_id']?>">
                     <?php 
+
+			$sec = $row['dur'];
+			$min = sec2time($sec);
 			/*是否存在id.jpg的文件
 			若存在$poster = $row['id'].".jpg"
 			否则 $poster = 0.jpg*/
@@ -421,31 +424,18 @@ LI;
 				//echo $poster;
 				//exit;
 				}
-			if(mb_strlen($row['stars'],'utf8')>13){
-				$stars=mb_substr($row['stars'],0,11,'utf-8')."...";
-					}else{
-				$stars=	$row['stars'];
-					}
-			if(strlen($row['tags'])>25){
-				$tags=mb_substr($row['tags'],0,15,'utf-8')."...";
-					}else{
-				$tags=	$row['tags'];
-					}
-			if($row['dur']){
-		            $sec = $row['dur'];
-		            $min = sec2time($sec);
-				}
 		?>
                     <center><img src="<?php echo $config['posterH'];echo $poster;?>" width="170px" height="120px" /></center>
                 	</a>
                 </div>
                 <div style="width:200px; margin:0px auto;">
                     <a href="movieDetail.php?id=<?php echo $row['id']?>&typeId=<?php echo $row['type_id']?>">
-                    <p align="center" class="black14"><?php echo mb_substr($row['title_cn'],0,14,'utf-8');?></p></a>
+                    <p align="center" class="black14"><?php echo $row['title_cn']?></p></a>
+		    <a href="movieDetail.php?id=<?php echo $row['id']?>&typeId=<?php echo $row['type_id']?>">
+ 		    <p align="center" class="stars">时长：<?php echo $min; ?></p></a>
                     <a href="movieDetail.php?id=<?php echo $row['id']?>&typeId=<?php echo $row['type_id']?>">
-                    <p align="center" class="stars">主演：<?php echo $stars; ?></p></a>
-		    <p align="center" class="stars">时长：<?php echo $min ?></p></a>
-                    <p align="center" class="black12"><?php echo $tags; ?></p>
+                    <p align="center" class="stars">主演：<?php echo mb_substr($row['stars'],0,10,'utf-8')."..."?></p></a>
+                    <p align="center" class="black12"><?php echo $row['tags']?></p>
 
                 </div>
             </div>
@@ -453,10 +443,6 @@ LI;
 
   <!--List END-->                
 			<?php
-		$sql="select count(*) AS total from video";
-		$result=$result=mysql_query($sql);
-		$row=mysql_fetch_array($result);
-		$total=$row['total'];
                 $page_len = ($page_len%2)?$page_len:$pagelen+1;//页码个数 
                 $pageoffset = ($page_len-1)/2;//页码个数左右偏移量 
                 
@@ -498,15 +484,15 @@ LI;
                 } 
                 if($page!=$pages){ 
 					$key.="<a href=\"".$_SERVER['PHP_SELF']."?page=".($page+1)."&field=".$field."&videotype=".$arr["type_id"]."&dur=".$arr["dur"]."&year=".$arr["year"]."\">&nbsp;下一页&nbsp;</a> ";//下一页 
-					$key.="<a href=\"".$_SERVER['PHP_SELF']."?page={$pages}&field=".$field."&videotype=".$arr["type_id"]."&dur=".$arr["dur"]."&year=".$arr["year"]."\">&nbsp;最后一页&nbsp;</a>(共 $total 部)"; //最后一页 
+					$key.="<a href=\"".$_SERVER['PHP_SELF']."?page={$pages}&field=".$field."&videotype=".$arr["type_id"]."&dur=".$arr["dur"]."&year=".$arr["year"]."\">&nbsp;最后一页&nbsp;</a>"; //最后一页 
                 }else { 
 					$key.="&nbsp;下一页&nbsp; ";//下一页 
-					$key.="&nbsp;最后一页&nbsp;(共 $total 部)"; //最后一页 
+					$key.="&nbsp;最后一页&nbsp;"; //最后一页 
                 } 
                 $key.='</div>'; 
                 ?>
 		
-                <div class="page" style="margin:50px auto"><?php echo $key?></div>
+                <div class="page"><?php echo $key?></div>
 	</div>
 </div>
 <?php

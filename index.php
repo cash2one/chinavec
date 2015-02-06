@@ -14,11 +14,11 @@
 session_start();
 if(!(isset($_SESSION['islogin']) && $_SESSION['islogin'] = true))
 {
-	include "login.php"; 
-	include "siteview.php";
+	include "login.php";
+	//include "siteview.php";
 }else{
 	include "LoginSuccess.php";
-	include "userview.php";
+	//include "userview.php";
 }
 ?>
 
@@ -34,9 +34,9 @@ if(!(isset($_SESSION['islogin']) && $_SESSION['islogin'] = true))
 
 	<!--导航栏-->
 	<?php 
-		include "common/table.php"; 
+		include "common/table.php";
 	?>
-	<!--end of 导航栏-->
+<!--	end of 导航栏-->
 	<div style="height:400px; width:700px; background-color:#000; margin:0 auto; margin-top:80px; clear:both; border-radius: 5px;">
 		<p align="center" style="color:#FFF; padding-top:15px; font-size:24px;">新片推荐</p>
 		<div style="width:700px;margin-top:15px;;">

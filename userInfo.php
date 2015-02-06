@@ -6,7 +6,9 @@
 <?php date_default_timezone_set("Asia/Shanghai");?>
 <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/base.css" />
+<link rel="stylesheet" type="text/css" href="css/progress.css" />
 <link rel="stylesheet" type="text/css" href="css/userInfo.css" />
+
 </head>
 
 <style type="text/css">
@@ -21,17 +23,7 @@ body {
 		session_start();
 		require "common/checkLog.php";
 		require "common/visitRight.php";
-	//<!--登录-->
-	if(!(isset($_SESSION['islogin']) && $_SESSION['islogin'] = true))
-	{
-		include "login.php"; 
-		//include "siteview.php";
-	}else{
-		include "LoginSuccess.php";
-		//include "userview.php";
-	};
-
-	//<!--登录-->
+		
 		/*获取选项卡的参照字段START****/
 		
 		$field = "perInfo";
@@ -50,8 +42,9 @@ body {
 		$sql="select * from user WHERE `id` = $userId";
 		$result=mysql_query($sql);
 		$row=mysql_fetch_object($result);
+		$user_role_id = $row->user_role_id;
 	?>
-	<br/>
+
     <div id="layout">
 		<?php include "common/table1.php";?>
         <div id="userInfo">
@@ -60,12 +53,20 @@ body {
             <div class="navList">
                 <ul>
                  <?php
+		    if($user_role_id == 0){
+		    $fieldArr = array(
+                        "perInfo" => "个人信息",
+                        "videoInfo" => "我的视频",
+                        "activityInfo" => "活动记录",
+		        );
+			}else{
                     $fieldArr = array(
                         "perInfo" => "个人信息",
                         "videoInfo" => "我的视频",
-                        "activityInfo" => "活动记录"
-                    );
-        
+                        "activityInfo" => "活动记录",
+		        "oplog"=>"操作日志"   );//---------------新添操作日志
+        		}
+                 
                     foreach ($fieldArr as $key => $value) {
                         $class = "navTitle";
                         if ($key == $field) {
@@ -194,10 +195,10 @@ LI;
 	
 	echo "	<div class='videoBlock'>
 			<div class='orange16' style='margin-top:20px;'><span>&nbsp;&nbsp;&nbsp;&nbsp;已上传的视频</span></div>";
-	echo "<div class='videoForm' style='margin-left:20px;'>";
+	echo "<div class='videoForm'>";
 	
 	if($count == 0){
-			echo "<center><span class='warning' style='margin:0 auto' >您还没有上传视频!</span></center><br/>";
+			echo "<span class='warning'>您还没有上传视频!</span><br/>";
 		}
 	else{
 			/*准备分页工作*/	
@@ -228,10 +229,12 @@ LI;
 			?>
             	<div class="posterH">
                     <a href="movieDetail.php?id=<?php echo $row->id; ?>">
+		
                     <?php 
                         /*是否存在id.jpg的文件
                         若存在$poster = $row['id'].".jpg"
                         否则 $poster = 0.jpg*/
+
                         $file = $config['posterH'].$row->id.".jpg";
                         if(file_exists($file)){
                             $poster = $row->id.".jpg";
@@ -252,7 +255,8 @@ LI;
 			//array_push($uparray,$upstatus);
 			//print_r($uparray);
 			//echo "<script>setInterval('clock()',2000);</script>";
-            		echo "<script>setInterval('clock(".$video_id.")',500);</script>";
+            echo "<script>var int=self.setInterval('clock(".$video_id.")',2000);</script>";
+			/*			
 			switch($rowm['status'])
                          {
 			  case 0:
@@ -266,12 +270,13 @@ LI;
                             break;
 						
                          default:
-                         }
+			
+                         }*/
                     ?>
                     <img class="poster" width="150" height="80" src="<?php echo $config['posterH'];echo $poster;?>" />
                     </a>
 				</div>
-                <div style="margin-left:250px;">
+                <div style="margin-left:200px;">
                     <div>
                         <a href="movieDetail.php?id=<?php echo $row->id; ?>"><span class="black14WeightArial"><?php echo $row->title_cn;?></span></a>
                     </div>
@@ -293,23 +298,28 @@ LI;
                                 echo "<a href='searchTagList.php?tag=".$tag."'>".$tag."</a>";
                                 echo "&nbsp;&nbsp;&nbsp;";
                             }
+
                         ?></span><br/>
                     </div>
                     <div class="p_half" style="width:20%;">
                         <span class='black12'>上传状态：</span>
                         <span class='orange13' id="<?php echo $video_id;?>"><?php //echo $status;?></span>
                     </div>
-		<div style="float:right;width:20%">
-		<?php
-		//$_SESSION['upload_auth'] = 'true';
-		?>
-			<a id="submit" class="filterButton" href="./upload/uploadVideo?ID=<?php echo $row->id; ?>" type="submit" style=" float:right;text-align:center;font-size: 15px;font-weight: 300;height: 30px;margin-right: 38px;color:white;width: 82px;line-height:28px">重新上传</a>
-            </div>
+		<div style="float:right;width:20%;margin-right: 5px;">
+			<a id="submit" class="filterButton" href="./upload/mod_upload_video.php?id=<?php echo $row->id; ?>" type="submit" style=" float:right;font-size: 18px;font-weight: 300;height: 25px;margin-right: 5px;color:white;width: 82px;">重新上传</a>
+
+            <!--</div>
+		<div style="width: 600px;float:left" id="listbox">
+		<span class='black12' style="float:left;font-size:13px;">转码进度：</span><div id="ibox" class="progress progress-striped" style="width: 400px;">
+		<div id="progressNumber" class="bar"></div>
+		</div>-->
+		</div>
                 </div>
       <div><hr style=" width:890px;margin-top:10px; float:left;border:1px solid #D9D9D9" /></div>
                 <div style="clear:both"></div>
 		<?php }
 		?>
+
         		<!--已上传的视频分页页码START-->
                     <?php
                     $upPage_len = ($upPage_len%2)?$upPage_len:$upPage_len+1;//页码个数 
@@ -604,7 +614,6 @@ LI;
 				$min = $sec%60;
 				$res = $hour.'小时';
 				$min != 0  &&  $res .= $min.'分';
-
 			}else{
 				$res = $sec.'分钟';
 			}
@@ -706,17 +715,298 @@ TR;
 
 
 
-<?php break;
-	} ?>
+<?php break;                 
+  //----------------------------------------------------------------------新添操作日志模块
+   case "oplog":
+	?>
+	<!--操作日志版块START-->
+          
+               <div class='orange16' style='margin-     	top:30px;'><span>&nbsp;&nbsp;&nbsp;&nbsp;上传视频日志记录</span></div>		
+<?php
+	$sql = "SELECT * FROM `video` inner join `user` on video.user_id=user.id ORDER BY `user_id` asc";
+	$result=mysql_query($sql);
+	$count = mysql_num_rows($result);
+        $page_size=20; //每页显示的条目数
+	$page_count = ceil($count/$page_size); //总显示页数
+	if($page_count<=0){$page_count=1;}
+	$init=1; 
+	$page_len=7;///显示的页码数
+	$max_p=$page_count;
+	$pages=$page_count;
+			
+	//判断当前页码 
+	if (empty($_GET['page'])||$_GET['page']<1) { 
+		$page=1; 
+	} else { 
+		$page=$_GET['page']; 
+		} 
+	$offset=$page_size*($page-1); 
+	
+	$sqlm = "SELECT * FROM `video` inner join `user` on video.user_id=user.id ORDER BY `user_id` asc limit $offset,$page_size";
+	$result=mysql_query($sqlm);?>
+
+ <!--显示日志列表List START -->
+	<div style="width=95%;height:250px;margin-left:10px;overflow:auto;overflow-x: hidden">
+	<table style="width:100%;margin:0 0 0 20px;">
+  <tr style="border-right:solid 1px #bfcfda;color:#000;">
+	<th>用户</th>
+	<th>上传视频</th>
+	<th>上传日期</th>
+  </tr>
+       <?php 
+		while ($row=mysql_fetch_array($result)) {  
+           	$up_date = date('Y-m-d',$row['uptime']);
+		echo "<tr style='border-right:solid 1px #bfcfda;color:#000;'>";
+		echo "<td>{$row['name']}</td>";
+		echo "<td>{$row['title_cn']}</td>";
+		echo "<td>{$up_date}</td>";
+		echo "</tr>";
+		
+
+            } ?>
+	</table>
+	</div>
+  <!--List END-->   
+<!--上传视频的日志分页页码START-->
+         <?php
+                    $page_len = ($page_len%2)?$page_len:$page_len+1;//页码个数 
+                    $pageoffset = ($page_len-1)/2;//页码个数左右偏移量 
+                    
+                    $key='</br><div class="page">'; 
+                    $key.="<span>$page/$pages&nbsp;&nbsp;</span> "; //第几页,共几页 
+                    if($page!=1){ 
+                        $key.="<a href=\"".$_SERVER['PHP_SELF']."?page=1&field=".$field."\"><span>&nbsp;第一页&nbsp;</span></a> "; //第一页 
+                        $key.="<a href=\"".$_SERVER['PHP_SELF']."?page=".($page-1)."&field=".$field."\"><span>&nbsp;上一页&nbsp;</span></a>"; //上一页 
+                    }
+                    else { 
+                        $key.="&nbsp;第一页&nbsp;";//第一页 
+                        $key.="&nbsp;上一页&nbsp;"; //上一页 
+                    } 
+                    if($pages>$page_len){ 
+                    //如果当前页小于等于左偏移 
+                        if($page<=$pageoffset){ 
+                            $init=1; 
+                            $max_p = $page_len; 
+                        }
+                        else{//如果当前页大于左偏移 
+                            //如果当前页码右偏移超出最大分页数 
+                            if($page+$pageoffset>=$pages+1){ 
+                                $init = $pages-$page_len+1; 
+                            }
+                            else{ 
+                                //左右偏移都存在时的计算 
+                                $init = $page-$pageoffset; 
+                                $max_p = $page+$pageoffset; 
+                                } 
+                        } 
+                    } 
+                    for($i=$init;$i<=$max_p;$i++){ 
+                        if($i==$page){ 
+                            $key.=' <span class="currentPage">'.$i.'</span>'; 
+                        }
+                        else { 
+                            $key.=" <a href=\"".$_SERVER['PHP_SELF']."?page=".$i."&field=".$field."\"><span class='notCurPage'>".$i."</span></a>"; 
+                        } 
+                    } 
+                    if($page!=$pages){ 
+                        $key.="<a href=\"".$_SERVER['PHP_SELF']."?page=".($page+1)."&field=".$field."\">&nbsp;下一页&nbsp;</a> ";//下一页 
+                        $key.="<a href=\"".$_SERVER['PHP_SELF']."?page={$pages}&field=".$field."\">&nbsp;最后一页&nbsp;</a>"; //最后一页 
+                    }else { 
+                        $key.="&nbsp;下一页&nbsp; ";//下一页 
+                        $key.="&nbsp;最后一页&nbsp;"; //最后一页 
+                    } 
+                    $key.='</div>'; 
+                    ?>
+            
+                  <?php echo $key?>
+
+
+                <!--上传视频的日志分页页码END-->
+
+                <!--授权视频的日志start-->
+        <div class='orange16' style='margin-top:50px;'><span>&nbsp;&nbsp;&nbsp;&nbsp;授权视频日志记录</span></div>
+<?php
+$sql = "SELECT user.name,authen.title_cn,authen.valid_dt,authen.type from `authen` inner join `user` on authen.user_id=user.id order by authen.valid_dt desc";
+	$result=mysql_query($sql);
+	$count = mysql_num_rows($result);
+        $authpage_size=20; //每页显示的条目数
+	$authpage_count = ceil($count/$authpage_size); //总显示页数
+	if($authpage_count<=0){$authpage_count=1;}
+	$init=1; 
+	$authpage_len=7;///显示的页码数
+	$max_p=$authpage_count;
+	$pages=$authpage_count;
+
+			
+	//判断当前页码 
+	if (empty($_GET['authpage'])||$_GET['authpage']<1) { 
+		$authpage=1; 
+	} else { 
+		$authpage=$_GET['authpage']; 
+		} 
+	$offset=$authpage_size*($authpage-1); 
+	
+	$sqlm = "SELECT user.name,authen.title_cn,authen.valid_dt,authen.type,authen.authen_date from `authen` inner join `user` on authen.user_id=user.id order by authen.valid_dt desc limit $offset,$page_size";
+	$result=mysql_query($sqlm);?>
+
+ <!--显示日志列表List START -->
+	<div style="width=95%;height:250px;margin-left:10px;overflow:auto;overflow-x: hidden">
+       <table style="width:100%;margin:0 0 0 20px;">
+  <tr style="border-right:solid 1px #bfcfda;color:#000;">
+	<th>用户</th>
+	<th>授权视频</th>
+	<th>授权日期</th>
+	<th>授权类型</th>
+  </tr>
+       <?php 
+		while ($row=mysql_fetch_array($result)) {  
+           	$up_date = date('Y-m-d',$row['authen_date']);
+		echo "<tr style='border-right:solid 1px #bfcfda;color:#000;'>";
+		echo "<td>{$row['name']}</td>";
+		echo "<td>{$row['title_cn']}</td>";
+		echo "<td>{$up_date}</td>";
+		echo "<td>{$row['type']}</td>";
+		echo "</tr>";
+		
+
+            } ?>
+	</table>
+	</div>
+
+  <!--List END-->   
+<!--授权视频的日志分页页码START-->
+         <?php
+                    $authpage_len = ($authpage_len%2)?$authpage_len:$authpage_len+1;//页码个数 
+                    $authpageoffset = ($authpage_len-1)/2;//页码个数左右偏移量 
+                    
+                    $key='</br><div class="page">'; 
+                    $key.="<span>$authpage/$pages&nbsp;&nbsp;</span> "; //第几页,共几页 
+                    if($page!=1){ 
+                        $key.="<a href=\"".$_SERVER['PHP_SELF']."?authpage=1&field=".$field."\"><span>&nbsp;第一页&nbsp;</span></a> "; //第一页 
+                        $key.="<a href=\"".$_SERVER['PHP_SELF']."?authpage=".($page-1)."&field=".$field."\"><span>&nbsp;上一页&nbsp;</span></a>"; //上一页 
+                    }
+                    else { 
+                        $key.="&nbsp;第一页&nbsp;";//第一页 
+                        $key.="&nbsp;上一页&nbsp;"; //上一页 
+                    } 
+                    if($pages>$authpage_len){ 
+                    //如果当前页小于等于左偏移 
+                        if($authpage<=$authpageoffset){ 
+                            $init=1; 
+                            $max_p = $authpage_len; 
+                        }
+                        else{//如果当前页大于左偏移 
+                            //如果当前页码右偏移超出最大分页数 
+                            if($authpage+$authpageoffset>=$pages+1){ 
+                                $init = $pages-$authpage_len+1; 
+                            }
+                            else{ 
+                                //左右偏移都存在时的计算 
+                                $init = $authpage-$authpageoffset; 
+                                $max_p = $authpage+$authpageoffset; 
+                                } 
+                        } 
+                    } 
+                    for($i=$init;$i<=$max_p;$i++){ 
+                        if($i==$authpage){ 
+                            $key.=' <span class="currentPage">'.$i.'</span>'; 
+                        }
+                        else { 
+                            $key.=" <a href=\"".$_SERVER['PHP_SELF']."?authpage=".$i."&field=".$field."\"><span class='notCurPage'>".$i."</span></a>"; 
+                        } 
+                    } 
+                    if($authpage!=$pages){ 
+                        $key.="<a href=\"".$_SERVER['PHP_SELF']."?authpage=".($page+1)."&field=".$field."\">&nbsp;下一页&nbsp;</a> ";//下一页 
+                        $key.="<a href=\"".$_SERVER['PHP_SELF']."?authpage={$pages}&field=".$field."\">&nbsp;最后一页&nbsp;</a>"; //最后一页 
+                    }else { 
+                        $key.="&nbsp;下一页&nbsp; ";//下一页 
+                        $key.="&nbsp;最后一页&nbsp;"; //最后一页 
+                    } 
+                    $key.='</div>'; 
+                    ?>
+            
+                  <?php echo $key?>
+
+
+                <!--授权视频的日志分页页码END-->
+
+<?php break;} ?>
 
 </div>    
+     
     
     
 
 <?php
 	require('common/footer.php');
 ?>
-<!--upload status-->
+<!--
+<script>
+
+function clock()
+  {
+	   $.post("select.php",
+	  {
+		name:"视频文件",
+		status:"状态"
+	  },
+	  function(data){
+		//alert(data.name);
+		
+		//data=JSON.parse(data);
+		//console.log(data[1].status);
+		for(var i=0;i<data.length;i++){
+			var n=Number(data[<?php //echo $upstatus-1;?>].status);
+		switch(n){
+				case 0:
+				//$("#content").append("<p>待转码</p>");
+				$("#<?php //echo $video_id;?>").html("待转码");
+				break;
+				case 1:
+				//$("#content").append("<p>正在转码</p>");
+				//$("#content").html("正在转码");
+				$("#<?php //echo $video_id;?>").html("正在转码");
+				
+					  /* var idiv=document.getElementById('progressNumber');
+					   var ibox=document.getElementById('ibox');
+					   //var timer=null;
+
+					   timer=setInterval(function(){
+						   var iWidth=idiv.offsetWidth/ibox.offsetWidth*100;
+						   idiv.style.width=idiv.offsetWidth+1+'px';//灰色长度增1px；
+							   idiv.innerHTML=Math.round(iWidth)+"%";//数字%；
+							   if(idiv.style.width==100){
+						      clearInterval(timer);	
+						   }
+							},"1000")*/
+				break;
+				case 2:
+				
+				//$("#content").append("<p>视频已转码</p>");
+				//$("#content").html("视频已转码");
+				$("#<?php //echo $video_id;?>").html("完成");
+				$("#listbox").css({display:"none"});
+				//clearInterval();
+				break;
+			}
+		}		
+		//for(var i=1;i<=data[0]+1;i++){
+		//	console.log(data[i]);
+			//$("#content").append("<p>"+data[i].status+"</p>");
+		//	$("#content").append("<p>视频已转码</p>");
+		//}
+		//console.log(data[0]);
+		
+		//console.log($("#content").html(data));
+		//$("#content").append("<p>"+data["name"]+"</p>");
+		//$("#content").append("<p>"+data.status+"</p>");
+	  },"json"
+	  )
+	  
+  }
+
+</script>
+-->
 <script>
 var sid='';
 function clock(sid)
@@ -751,7 +1041,7 @@ function clock(sid)
                 //$("#content").html("视频已转码");
                 $("#"+sid+"").html("完成");
 		$("#listbox").css({"display":"none"});
-                //clearInterval(int);
+                clearInterval(int);
                 break;
             }
         //}     
@@ -767,6 +1057,7 @@ function clock(sid)
         //$("#content").append("<p>"+data.status+"</p>");
       },"json"
       )
+
       
   }
   /*

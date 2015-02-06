@@ -42,7 +42,7 @@ $(document).ready(function(){
 }); 
 $(document).ready(function(){
 	$("#user").mouseover(function(){
-		$(".userinfo").show("slow");
+		$(".userinfo").show();
 	});
 	$("#userinfo").mouseover(function(){
 		$(this).show();
@@ -65,13 +65,14 @@ $(document).ready(function(){
 		<li><li class="reg" id="user" ><a href="userInfo.php" style="width:auto;padding-left:10px;padding-right:10px;"><span class="user-name"><?php echo $_SESSION['user_name']?></span>&nbsp<span class="user-arrow"></span></a>
 		<div style="position:absolute;margin-top:35px;clear:both;display:none" class="userinfo" id="userinfo">
 		<ul>
-		<li style="float:none;clear:both"><a href="http://<?php echo $_SERVER['HTTP_HOST']?>/chinavec/userInfo.php?field=perInfo" style="width:auto;padding-left:10px;padding-right:10px;">个人信息</a></li>
-		<li style="float:none;clear:both"><a href="http://<?php echo $_SERVER['HTTP_HOST']?>/chinavec/userInfo.php?field=videoInfo" style="width:auto;padding-left:10px;padding-right:10px;">我的视频</a></li>
-		<li style="float:none;clear:both"><a href="http://<?php echo $_SERVER['HTTP_HOST']?>/chinavec/userInfo.php?field=activityInfo" style="width:auto;padding-left:10px;padding-right:10px;">活动记录</a></li>
+		<li style="float:none;clear:both"><a href="userInfo.php?field=perInfo" style="width:auto;padding-left:10px;padding-right:10px;">个人信息</a></li>
+		<li style="float:none;clear:both"><a href="userInfo.php?field=videoInfo" style="width:auto;padding-left:10px;padding-right:10px;">我的视频</a></li>
+		<li style="float:none;clear:both"><a href="userInfo.php?field=activityInfo" style="width:auto;padding-left:10px;padding-right:10px;">活动记录</a></li>
+		<!--<li style="float:none;clear:both"><a href="userInfo.php?field=oplog" style="width:auto;padding-left:10px;padding-right:10px;">操作日志</a></li>-->
 		</ul>
 </div>
 </li></li>
-		<li class="reg"><a href="http://<?php echo $_SERVER['HTTP_HOST']?>/chinavec/logout.php">退出</a></li>
+		<li class="reg"><a href="logout.php">退出</a></li>
 	</ul>
 
 </div>

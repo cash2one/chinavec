@@ -20,9 +20,27 @@
 <div id="header" style="width:900px;margin:0 auto;"><img src="img/vec_logo2.jpg" width=800></div>
 <div id="layout">
     <?php 
-		include "./common/table.php";
-		$id=$_GET['ID'];
-	?>
+	include "./common/table.php";
+        error_reporting( E_ALL&~E_NOTICE );
+	
+	$id=$_GET['ID'];
+	$file  = '/var/www/chvec_auth/video/'.$id.'.mp4';
+	$vtime =exec("/root/bin/ffmpeg -i ".$file." 2>&1 | grep 'Duration' | cut -d '' -f 4 | sed s/,//",$out);
+  //1和2指的是文件描述符 ">"是重定向符号。“2>&1”的意思：将输出到标准出错处理的信息，发送到标准输出中。
+	//echo "$vtime";
+	$duration = explode(":",$vtime);
+	//print_r ($duration);
+	$duration_in_seconds = $duration[1]*3600 + $duration[2]*60+ round($duration[3]);
+	//echo "$duration_in_seconds";
+     ?>
+    <?php
+	require('lib/connect.php');
+	$sql = mysql_query("UPDATE `chinavec`.`video` SET `dur`='$duration_in_seconds' where `id`='$id'");	
+
+	$sql2=mysql_query("UPDATE `chinavec`.`video_upload` SET `time`='$duration_in_seconds' where `video_id`='$id'");	
+	//echo "<script type=\"text/javascript\">alert('视频时长已录入');</script>";
+	 mysql_close($conn);
+    ?>
     <div style="width:960px; height:630px; margin:0 auto; clear:both;border-radius: 5px;" class="change" align="left"><h2 class="post_left"><br/>&nbsp;微视频截图</h2>
     <br/>
     <p>&nbsp;&nbsp;用户可以从三种方式中选择一种方式获取图片作为视频封面</p>

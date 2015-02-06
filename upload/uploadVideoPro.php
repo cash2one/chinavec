@@ -19,6 +19,10 @@ $sql="select * from `user` where `name`='$username'";
 $result=mysql_query($sql);
 $row=mysql_fetch_array($result);
 $user_id=$row['id'];
+//echo $user_id;
+//exit;
+$time = date('Y-m-d');
+$up_date = strtotime($time);
 function getnameV($videoExname,$videoName){ 
 	$dir = "video/"; 
 	$i = mysql_insert_id ();
@@ -69,22 +73,46 @@ function getnameP($posterExname,$posterName){
 	} 
 	return $name; 
 }
-
-
+function type_id($type){
+	switch ($type){
+		case '微电影':
+		  $video_type = 1;
+		  break;
+		case '微记录':
+		  $video_type = 2;
+		  break;
+		case '微栏目':
+		  $video_type = 3;
+		  break;
+		case '微动漫':
+		  $video_type = 4;
+		  break;
+		case '创意视频':
+		  $video_type = 5;
+		  break;
+		case '信息视频':
+		  $video_type = 6;
+		  break;
+}
+		return $video_type;
+}
 	//接收数据
 	//ob_start();
 	//$partNum = $_POST['partnum'];
 	//$token = $_POST['token'];
 	$titleCn 	= $_POST["titleCn"]		? $_POST['titleCn']    : '';
 	$titleEn 	= $_POST["titleEn"]		? $_POST['titleEn']    : '';
-	$director 	= $_POST["director"]	? $_POST['director']    : '';
-	$producer 	= $_POST["producer"]	? $_POST['producer']    : '';
+	$director 	= $_POST["director"]		? $_POST['director']    : '';
+	$producer 	= $_POST["producer"]		? $_POST['producer']    : '';
 	$stars 		= $_POST["stars"]		? $_POST['stars']    : '';
-	$dur 		= $_POST["dur"]			? $_POST['dur']    : '';
-	$videoType 	= $_POST["videoType"]	? $_POST['videoType']    : '';
+	//$dur 		= $_POST["dur"]			? $_POST['dur']    : '';
+	$videoType 	= $_POST["videoType"]		? $_POST['videoType']    : '';
 	$tags 		= $_POST["tags"]		? $_POST['tags']    : '';
-	$year 		= $_POST["year"]		? $_POST['year']    : '';
 	$dscrp 		= $_POST["dscrp"]		? $_POST['dscrp']    : '';
+	$tel 		= $_POST["tel"]			? $_POST['tel']    : '';
+	$wechat 	= $_POST["wechat"]		? $_POST['wechat']    : '';
+	$qq 		= $_POST["qq"]			? $_POST['qq']    : '';
+	$mail		= $qq.'@qq.com';
 	//print_r($_POST);
  	//print_r($_partNum);
 	//$data = ob_get_contents();
@@ -92,9 +120,37 @@ function getnameP($posterExname,$posterName){
 	//echo '2';
 	//exit;
 	require('lib/connect.php');
-	
-	$sql = "INSERT INTO `chinavec`.`video` (`title_cn` ,`title_en` ,`type_id` ,`dscrp` ,`dur` ,`director` ,`producer` ,`stars` ,`tags`,`user_id`,`is_on_shelf`,`year`) 
-									VALUES ('$titleCn' ,'$titleEn' ,'$videoType' ,'$dscrp' ,'$dur' ,'$director' ,'$producer' ,'$stars' ,'$tags','$user_id','-1','$year');"; 
+	$result = mysql_query("select * from video where `title_cn` = '$titleCn' and `user_id` != '$user_id'");
+	$row = mysql_num_rows($result);
+	if($row>0){
+	echo "<script type=\"text/javascript\">alert('视频名称已存在，请重新改写视频名称');history.back();</script>";
+	exit;		
+	}
+	//重新上传
+	if (isset($_GET['id'])) {
+	    $video_type = type_id($videoType);
+            $mod_id = $_GET['id'];
+	    $sql = "UPDATE `chinavec`.`video` SET `title_cn`='$titleCn' ,`title_en`='$titleEn' ,`contact_tel` = '$tel', `contact_qq` = '$qq', `contact_wechat` = '$wechat', `contact_mail` = '$mail', `type_id`= '$video_type',`dscrp` = '$dscrp',`director` = '$director',`producer` ='$producer' ,`stars`= '$stars' ,`tags`='$tags',`user_id` ='$user_id',`is_on_shelf` = '-2',`uptime` = '$up_date'  where `id`='$mod_id'"; 
+	if (mysql_query($sql,$conn))
+	{	
+		$result=mysql_query($sql);	
+
+			echo "<script type=\"text/javascript\">alert('信息录入成功,请上传视频');</script>";
+			echo "<script type=\"text/javascript\">window.location.href=\"uploadVideo.php?ID=$mod_id\";</script>
+?>";
+		}
+		
+	//数据库插入不成功
+	else   
+	{	
+		echo "<script type=\"text/javascript\">alert('11信息录入失败');</script>";
+		echo "<script type=\"text/javascript\">window.location.href=\"upload_video.php\";</script>";
+		
+	}
+	//新上传视频		
+	}else{
+	$sql = "INSERT INTO `chinavec`.`video` (`title_cn` ,`title_en` ,`contact_tel`, `contact_qq`, `contact_wechat`, `contact_mail`, `type_id` ,`dscrp` ,`director` ,`producer` ,`stars` ,`tags`,`user_id` ,`is_on_shelf`, `uptime` ) 
+									VALUES ('$titleCn' ,'$titleEn' , '$tel', '$qq', '$wechat', '$mail', '$videoType' ,'$dscrp' ,'$director' ,'$producer' ,'$stars' ,'$tags','$user_id','-2','$up_date');"; 
 	//echo $sql;
 	//exit;
 	if (mysql_query($sql,$conn))
@@ -147,9 +203,9 @@ function getnameP($posterExname,$posterName){
 			}*/
 		$id = mysql_insert_id ();
 		$up_time=time();
-		$sql = "INSERT INTO `chinavec`.`video_upload` (`video_id` ,`status` ,`time` ,`up_time`) 
-									VALUES ('$id' ,'0' ,'$dur ' ,'$up_time');";
-		$result=mysql_query($sql);
+		$sql = "INSERT INTO `chinavec`.`video_upload` (`video_id` ,`status` ,`up_time`) 
+									VALUES ('$id' ,'0' ,'$up_time');";
+		$result=mysql_query($sql);	
 		/*$sql1 = "UPDATE `chinavec`.`video`  SET `video_url` = '$uploadVideo',
 												`poster` = '$uploadPoster' 
 											WHERE `video`.`id` =$id;"; 
@@ -157,7 +213,6 @@ function getnameP($posterExname,$posterName){
 		//exit;
 		if (mysql_query($sql1,$conn))
 		{*/
-			//$_SESSION['upload_auth'] = 'true';
 			echo "<script type=\"text/javascript\">alert('信息录入成功,请上传视频');</script>";
 			echo "<script type=\"text/javascript\">window.location.href=\"uploadVideo.php?ID=$id\";</script>
 ?>";
@@ -175,6 +230,7 @@ function getnameP($posterExname,$posterName){
 		echo "<script type=\"text/javascript\">window.location.href=\"upload_video.php\";</script>";
 		
 	}
+}
 
 		mysql_close($conn);
 
@@ -191,4 +247,5 @@ function getnameP($posterExname,$posterName){
 
     "<br>错误代码：".$_FILES['video']['error']; 
 */
+
 ?>

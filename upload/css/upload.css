@@ -11,17 +11,18 @@ form{
 .change{ 
 	/*背景图颜色渐变*/
 	width:100%; 
-	height:850px; 
-	/*FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#ddd,endColorStr=#eee); *//*IE*/ 
+	height:880px; 
+	/*FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#ddd,endColorStr=#eee);*/ /*IE*/ 
 	/*background:-moz-linear-gradient(top,#ddd,#eee);*//*火狐*/ 
-	/*background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#ddd), to(#eee));*//*谷歌*/ 
+	/*background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#ddd), to(#eee));*//*谷歌*/
+	
 
-	background: -webkit-gradient(linear, 0 0, 0 100%, from(#ddd), to(#eee)); /** Chrome Safari **/
-	background: -moz-linear-gradient(top, #ddd, #eee); /** FireFox **/
-	background: -o-linear-gradient(top, #ddd, #eee);  /** Opear **/
-	background: -ms-linear-gradient(#dddddd 0%,#eeeeee 100%);  /** IE9 IE10 **/
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dddddd',endColorstr='#eeeeee',grandientType=1); /** IE7 **/
-	-ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dddddd',endColorstr='#eeeeee',grandientType=1); /** IE8 **/
+	background: -webkit-gradient(linear, 0 0, 0 100%, from(#eee), to(#ddd)); /** Chrome Safari **/
+	background: -moz-linear-gradient(top, #eee, #ddd); /** FireFox **/
+	background: -o-linear-gradient(top, #eee, #ddd);  /** Opear **/
+	background: -ms-linear-gradient(#eeeeee 0%,#dddddd 100%);  /** IE9 IE10 **/
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee',endColorstr='#dddddd',grandientType=1); /** IE7 **/
+	-ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee',endColorstr='#dddddd',grandientType=1); /** IE8 **/ 
 } 
 .button{
 	width: 25px;
