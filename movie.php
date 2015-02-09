@@ -357,7 +357,13 @@ LI;
         }
 
         $Page_size=20; //每页显示的条目数
+	if($field == "playNum"){
+		$sql = "SELECT `video`.*,`video_view_statistics`.`view_total` FROM video  INNER JOIN video_view_statistics 
+				ON video.id = video_view_statistics.video_id
+				where video.$condition";
+	}else{
 		$sql="select * from video where $condition";
+	}
         // print_r($sql);
 
         $result=mysql_query($sql);
@@ -382,15 +388,15 @@ LI;
 
 
 		if($field == "playNum"){
-			/*$sql="SELECT * FROM video  LEFT JOIN video_view_statistics 
+			$sql="SELECT `video`.*,`video_view_statistics`.`view_total` FROM video  INNER JOIN video_view_statistics 
 				ON video.id = video_view_statistics.video_id
-				where $condition
+				where video.$condition 
 				ORDER BY video_view_statistics.view_total DESC
-				limit $offset,$Page_size";*/
-			$sql="SELECT `video_view_statistics`.`video_id`,`video_view_statistics`.`type_id`,count(`video_view_statistics`.`video_id`) 
+				limit $offset,$Page_size";
+			/*$sql="SELECT `video_view_statistics`.`video_id`,`video_view_statistics`.`type_id`,count(`video_view_statistics`.`video_id`) 
 				AS `view_total`,`video`.* from `video_view_statistics`,`video` where `video`.`id`=`video_view_statistics`.`video_id`
 				group by `video_view_statistics`.`video_id` ORDER BY count(`video_view_statistics`.`video_id`) DESC,`video`.`id` DESC
-				limit $offset,$Page_size";
+				limit $offset,$Page_size";*/
 			}
 		else{
     		$sql="select * from video where $condition

@@ -1,9 +1,3 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="renderer" content="webkit" />
-<title>微视频采购</title>
 <?php 
 		session_start();
 		$id = $_GET['id'];
@@ -37,7 +31,12 @@ header("Content-Type:text/html;charset=UTF-8");
 //**************************************************
 ?>
 
-
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit" />
+<title>微院线播放</title>
 <!--访问量统计-->
 <?php
         require('./lib/http_client.class.php');
@@ -61,12 +60,32 @@ header("Content-Type:text/html;charset=UTF-8");
 	$year = $timearray[0];
 	$month = $timearray[1];
 	$day = $timearray[2];
+
+
+	$sqldate= "select * from `video_view_statistics` where `year` = '".$year."' and `month` = '".$month."' and `day`= '".$day."' and `video_id` = '".$id."';";
+	
+	//$view_total = $row->view_total;
+	//echo $view_total;
+	if(count($db->select($sqldate)) != 0){
+	$result = $db->select($sqldate,$sqlOracle='');
+	$row = $result[0];
+	$view_total = $row->view_total;
+	$visitData = ++$view_total;
+	}else{
+	$visitData = 1;
+	}
+
 	//设置所需要存储的参数
-	$row = array('video_id' => $id, 'type_id' => $typeId, 'year' => $year, 'month' => $month, 'day' => $day, 's_time' => $s_time);
+	$row = array('view_total' => $visitData,'video_id' => $id, 'type_id' => $typeId, 'year' => $year, 'month' => $month, 'day' => $day, 's_time' => $s_time);
+	$rowday=array('video_id' => $id, 'year' => $year, 'month'=>$month, 'day'=>$day);
+
+
 	//调用数据库操作类中的insert函数，成功返回"OK"信息，失败返回"ERROR"信息
-	if($db->insert('video_view_statistics', $row)){
+	if(count($db->select($sqldate)) == 0){
+		$db->insert('video_view_statistics', $row);		
 		//echo 'OK';
 	}else{
+		$db->update('video_view_statistics', $row ,$rowday);		
 		//echo 'ERROR';
 	}
  ?>
@@ -103,51 +122,51 @@ header("Content-Type:text/html;charset=UTF-8");
 	});
 	$(".jp-full-screen").click(function(){
 		$(".closelight").css("display","none");
-		});
+	});
 	$(".jp-restore-screen").click(function(){
 		$(".closelight").css("display","block");
-		});
+	});
 	});
 
 </script>
 
 <style type="text/css">
-body {
-	text-align:center;
-	background:#333 repeat 0px 1px;
-}
-#jpmovie{
-z-index:1000;
-position:relative;
-}
-.lightSwitcher, .turnedOff {
-position:absolute;
-z-index:1002;
-background:url(./img/light_bulb.png) no-repeat 0 0;
-padding:0;
-text-indent:20px;
-outline:none;
-text-decoration:none;
-zoom:1;
-}
-.lightSwitcher:hover {
-text-decoration:underline;
-}
-#shadow {
-background:#000;
-position:absolute;
-left:0;
-top:0;
-width:100%;
-z-index:100;
-opacity:0.80;
-filter: alpha(opacity = 80);
-zoom:1;
-}
-.turnedOff {
-color:#ff0;
-background-position:0 -50px;
-}
+	body {
+		text-align:center;
+		background:#333 repeat 0px 1px;
+	}
+	#jpmovie{
+	z-index:3;
+	position:relative;
+	}
+	.lightSwitcher, .turnedOff {
+	position:absolute;
+	z-index:5;
+	background:url(./img/light_bulb.png) no-repeat 0 0;
+	padding:0;
+	text-indent:20px;
+	outline:none;
+	text-decoration:none;
+	zoom:1;
+	}
+	.lightSwitcher:hover {
+	text-decoration:underline;
+	}
+	#shadow {
+	background:#000;
+	position:absolute;
+	left:0;
+	top:0;
+	width:100%;
+	z-index:1;
+	opacity:0.80;
+	filter: alpha(opacity = 80);
+	zoom:1;
+	}
+	.turnedOff {
+	color:#ff0;
+	background-position:0 -50px;
+	}
 </style>
 
 <body>
@@ -182,8 +201,9 @@ background-position:0 -50px;
 		}
 	?>
 
-<br/><br/>
+
 <div id="layout">
+<br/><br/>
 <?php include "common/table1.php";?>
     	<div id="movieTitle">
 			<div style="float:left;">
@@ -224,8 +244,8 @@ background-position:0 -50px;
 		?>
 		<!--jplayer div-->       
 	   <!--<div style="margin:0 auto; text-align:center; width:100%">-->
-		<p class="closelight">	
-			<a class="lightSwitcher" href="#" style="font-size:15px;margin-top:40px;margin-left\0:180px;color:#ffffff">关灯</a>
+		<p style="text-align:center;margin-top:0px" class="closelight">	
+			<a class="lightSwitcher" href="#" style="margin-top:40px;margin-left:-50px;margin-left\0:90px;+margin-left:-10px;color:#ffffff;font-size:16px;">关灯</a>
 		</p>
 <!--
 				<div class="jp-video jp-video-270p" style="margin:0 auto;padding-top:60px;padding-bottom:10px">
@@ -336,9 +356,9 @@ background-position:0 -50px;
 	?>
 	<?php
 	if($shelf==1){
-		echo "<div class='shelfmedia' style='color:#fff;font-size:16px'>注意：本视频为亚播出级新媒体视频，仅适合各类新媒体投放渠道</div>";
+		echo "<div class='shelfmedia' style='color:#fff'>注意：本视频为亚播出级新媒体视频，仅适合各类新媒体投放渠道</div>";
 		}else if($shelf==0){
-		echo "<div class='shelfmedia' style='color:#fff;font-size:16px'>注意：本视频为下线视频，仅供内部参考</div>";
+		echo "<div class='shelfmedia' style='color:#fff'>注意：本视频为下线视频，仅供内部参考</div>";
 		}
 	?>
     <div class="movieDetail"> 
@@ -375,7 +395,7 @@ background-position:0 -50px;
 					?>
                 <img src="<?php echo $config['root'].$config['posterH'];echo $poster;?>" width="170px" height="110px" float="left"/>
                 </div>
-               <div style="width:215px; float:left; margin-left:28px;margin-top:-5px;">
+               <div style="width:220px; float:left; margin-left:28px;margin-top:-5px;">
                <div class="p_half1">
                     <span class='gray14'>导演：</span>
                     <span class='black14'><?php echo $row->director;?></span>
@@ -417,21 +437,15 @@ background-position:0 -50px;
                     <span class='gray14'>时长：</span>	
                     <span class='black14'><?php echo $min;?></span><br/>
                 </div>
-		<?php
-		if($_SESSION['user_name']){
-		$sqlm="SELECT * FROM `user` WHERE `name`='{$_SESSION['user_name']}'";
-		$resultm=mysql_query($sqlm);
-		$rowm=mysql_fetch_array($resultm);
-			if($rowm['user_role_id']==1){             
-			echo "<div class='p_half1'>
-	                    <span class='gray14'>联系：</span>	
-	                    <span class='black14'>QQ:$row->contact_qq</span><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			    <span class='black14'>电话:$row->contact_tel</span><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			    <span class='black14'>微信:$row->contact_wechat</span><br/>
-		                </div>";
-			}
-		}
-		?>
+
+                <div class="p_half1">
+                    <span class='gray14'>联系方式：</span>	
+                    <span class='black14'>QQ:<?php echo $row->contact_qq;?></span><br/>
+                </div>
+                <div class="p_half1">
+                    <span class='gray14'>积分：</span>
+                    <span class='black14'><?php echo $row->points;?></span><br/>
+                </div>
 		</div>
                 <div style=" margin-top:10px; width:500px; float:left;">   
                     <span class='gray14'>简介：</span>
@@ -458,7 +472,7 @@ background-position:0 -50px;
 					$num = 0;
 					while ($row_rank = mysql_fetch_array($result_rank)) {
 						$num = $num +1;
-						if(mb_strlen($row_rank['director'],'utf8')>8){
+						if(strlen($row_rank['director'])>9){
 							$director=mb_substr($row_rank['director'],0,3,'utf-8')."...";
 										}else{$director=$row_rank['director'];}
 						//print_r($row_rank);
@@ -524,11 +538,18 @@ background-position:0 -50px;
  <div id="shadow"></div>
 	
 <script type="text/javascript">
+
+	$(document).ready(function(){
+	$(".xuanze").click(function(){
+		window.location.href='<?php echo $config['root']; ?>order.php?id=<?php echo $id; ?>&name=<?php echo $row->title_cn; ?>';
+	});
+	});
+
 	//上线输出
 	var is_on_shelf=<?php echo $shelf;?>;
 	var right=<?php echo $right; ?>
 	//console.log(right);
-	if(is_on_shelf==0 && right!=1){
+	if(is_on_shelf==0&&right!=1){
 	$("#jpmovie").css({display:"none"});
 	$(".xuanze").css({display:"none"});
 	//$("#jp_container_1").css({"height":"600px"});
@@ -543,6 +564,9 @@ background-position:0 -50px;
 	$("#jp_container_1").append("<img style='' src='./img/convert.jpg'>");
 	$(".shelfmedia").css({display:"none"});
 	}
+	$(".xuanze").click(function(){
+		window.location.href='<?php echo $config['root']; ?>order.php?id=<?php echo $id; ?>&name=<?php echo $row->title_cn; ?>';
+	});
 </script>
 <?php
 	

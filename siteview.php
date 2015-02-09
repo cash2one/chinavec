@@ -35,7 +35,6 @@
 	}else{
 		$db->update('site_visit_statistics', $row ,$rowday);
 	}
-
 	//if($db->insert('site_visit_statistics', $row)){
 		//echo 'OK';
 	//}else{
